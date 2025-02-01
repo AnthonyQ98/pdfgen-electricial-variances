@@ -2,10 +2,8 @@ package pdf
 
 import (
 	"fmt"
-	"strings"
 
 	"github.com/go-pdf/fpdf"
-	"github.com/sqweek/dialog"
 )
 
 type Pdf struct {
@@ -26,37 +24,32 @@ func (p *Pdf) save() error {
 }
 
 func (p *Pdf) Generate() error {
+	// Create the 1st page
 	p.Pdf.AddPage()
+
 	p.Pdf.SetFont("Arial", "B", 16)
 	err := p.generateHeader()
 	if err != nil {
-		return err
+		return fmt.Errorf("error generating header: %v", err)
 	}
 
 	err = p.generateBody()
 	if err != nil {
-		return err
+		return fmt.Errorf("error generating body: %v", err)
 	}
 
-	// Open file selection dialog for images (select multiple)
-	selectedFiles, err := dialog.File().Filter("Image files", "png", "jpg", "jpeg", "gif", "bmp").Title("Select Images").Load()
-	if err != nil {
-		fmt.Println("Error selecting files:", err)
-		return err
-	}
-
-	// Split selected files into an array (if multiple)
-	imagePaths := strings.Split(selectedFiles, "\n")
-
+	// Create the 2nd page
 	p.Pdf.AddPage()
-	err = p.addImages(imagePaths)
+
+	// Add images to the second page
+	err = p.addImagesToPdf()
 	if err != nil {
-		return err
+		return fmt.Errorf("error adding images: %v", err)
 	}
 
 	err = p.save()
 	if err != nil {
-		return err
+		return fmt.Errorf("error saving %s: %v", p.name, err)
 	}
 
 	return nil

@@ -21,7 +21,7 @@ func (p *Pdf) generateHeader() error {
 
 	// Company Name
 	p.Pdf.SetFont("Arial", "B", 16)
-	p.Pdf.Cell(100, 10, "My Company Limited")
+	p.Pdf.Cell(100, 10, "Company Limited")
 	p.Pdf.Ln(8)
 
 	p.Pdf.SetFont("Arial", "", 12)
