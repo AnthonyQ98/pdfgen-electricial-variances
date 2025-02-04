@@ -21,12 +21,12 @@ func (p *Pdf) generateHeader() error {
 
 	// Company Name
 	p.Pdf.SetFont("Arial", "B", 16)
-	p.Pdf.Cell(100, 10, "Company Limited")
+	p.Pdf.Cell(100, 10, "Brightech Limited")
 	p.Pdf.Ln(8)
 
 	p.Pdf.SetFont("Arial", "", 12)
 	p.Pdf.SetX(textX)
-	p.Pdf.Cell(100, 10, "Email: info@company.ie")
+	p.Pdf.Cell(100, 10, "Email: info@brightech.ie")
 	p.Pdf.Ln(8)
 
 	// Document title
@@ -40,16 +40,16 @@ func (p *Pdf) generateHeader() error {
 
 	// Project & Client Information
 	p.Pdf.SetFont("Arial", "", 12)
-	p.Pdf.Cell(190, 10, "Project: New Electrical Installation - Site A")
+	p.Pdf.Cell(190, 10, "Project: Royal College of Surgeons Ireland (RCSI)")
 	p.Pdf.Ln(6)
-	p.Pdf.Cell(190, 10, "Client: John Doe - ABC Constructions")
+	p.Pdf.Cell(190, 10, "Client: "+p.ClientName)
 	p.Pdf.Ln(6)
 
 	// Date & Reference Number
 	currentTime := time.Now().Format("January 2, 2006")
-	p.Pdf.Cell(190, 10, "Date: "+currentTime)
+	p.Pdf.Cell(190, 10, "Date Logged: "+currentTime)
 	p.Pdf.Ln(6)
-	p.Pdf.Cell(190, 10, "Reference No: EVR-2024-001")
+	p.Pdf.Cell(190, 10, "Reference No: "+p.ReferenceNumber)
 	p.Pdf.Ln(10)
 
 	// Add a Divider Line

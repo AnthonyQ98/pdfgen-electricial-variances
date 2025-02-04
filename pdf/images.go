@@ -3,6 +3,7 @@ package pdf
 import (
 	"log"
 	"os"
+	"path/filepath"
 
 	"github.com/ncruces/zenity"
 )
@@ -77,15 +78,23 @@ func (p *Pdf) addImagesToPdf() error {
 }
 
 func (p *Pdf) selectImages() ([]string, error) {
-	dir, err := os.Getwd()
+	dir, err := os.UserHomeDir()
 	if err != nil {
 		return nil, err
 	}
 
+	downloadsDir := filepath.Join(dir, "Downloads")
+	if _, err := os.Stat(downloadsDir); os.IsNotExist(err) {
+		// Create the downloads directory if it doesn't exist
+		if err := os.Mkdir(downloadsDir, 0755); err != nil {
+			return nil, err
+		}
+	}
+
 	selectedFiles, err := zenity.SelectFileMultiple(
-		zenity.Filename(dir),
+		zenity.Filename(downloadsDir),
 		zenity.FileFilters{
-			{Name: "Image files", Patterns: []string{"*.png", "*.gif", "*.svg", "*.ico", "*.jpg", "*.webp"}, CaseFold: true},
+			{Name: "Image files", Patterns: []string{"*.png", "*.gif", "*.svg", "*.ico", "*.jpg", "*.webp", "*.jpeg"}, CaseFold: true},
 		})
 
 	if err != nil {
